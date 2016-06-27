@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Version: 2.7
+# Version: 3.5
 # Author: FEE1DE4D
 
 """
@@ -61,8 +61,8 @@ class Torrent(namedtuple("Torrent", ["name", "author", "verified_author",
         """
         Prints name, author, size and age
         """
-        print "%s by %s, size: %s, uploaded %s ago" % (self.name, self.author,
-                                                       self.size, self.age)
+        print('%s by %s, size: %s, uploaded %s ago').format(self.name, 
+              self.author, self.size, self.age)
 
 
 class Url(object):
@@ -206,7 +206,7 @@ class Results(object):
         """
         Parse url and yield namedtuple Torrent for every torrent on page
         """
-        torrents = map(self._get_torrent, self._get_rows())
+        torrents = list(map(self._get_torrent, self._get_rows()))
 
         for t in torrents:
             yield t
@@ -215,7 +215,7 @@ class Results(object):
         """
         Return list of Torrent namedtuples
         """
-        torrents = map(self._get_torrent, self._get_rows())
+        torrents = list(map(self._get_torrent, self._get_rows()))
 
         return torrents
 
@@ -257,7 +257,7 @@ class Results(object):
             return []
         pq = PyQuery(html)
         rows = pq("table.data").find("tr")
-        return map(rows.eq, range(rows.size()))[1:]
+        return list(map(rows.eq, range(rows.size())))[1:]
 
     def next(self):
         """
